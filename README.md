@@ -184,6 +184,8 @@ Create a `.env` file: "cp .env.example .env" and add your OPENAI_API_KEY.
 ```bash
 docker compose build --no-cache
 docker compose up
+
+When you see "Application startup complete." you are ready to go.
 ```
 
 Check running services:
