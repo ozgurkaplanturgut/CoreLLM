@@ -1,7 +1,7 @@
 services:
   vllm-chat:
     image: vllm/vllm-openai:latest
-    container_name: vllm-async-chat
+    container_name: vllm-chat-server
     restart: unless-stopped
     gpus: all
     ports:
@@ -21,7 +21,7 @@ services:
           --api-key ${VLLM_CHAT_API_KEY}
           --quantization awq
           --dtype auto
-          --max-model-len 2048
+          --max-model-len 1024
           --gpu-memory-utilization 0.85
           --tensor-parallel-size 1
           --enable-chunked-prefill
@@ -31,7 +31,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
-    container_name: zookeeper
+    container_name: zookeeper-server
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -41,7 +41,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.6.0
-    container_name: kafka
+    container_name: kafka-server
     depends_on:
       - zookeeper
     ports:
@@ -126,7 +126,7 @@ services:
 
   mongo:
     image: mongo:7
-    container_name: mongo
+    container_name: mongo-server
     ports:
       - "27018:27017"
     volumes:
@@ -135,7 +135,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: redis
+    container_name: redis-server
     command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
